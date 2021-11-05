@@ -1,1 +1,1 @@
-C:\Unknown-Horizons\python\python.exe .\run_uh.py
+C:\Unknown-Horizons\python\python.exe .\run_uh.py --debug --start-map ai --ai-players 1
