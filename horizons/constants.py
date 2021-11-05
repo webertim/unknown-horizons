@@ -420,7 +420,7 @@ class GAME_SPEED:
 	TICK_RATES = [] # type: List[int]
 
 
-GAME_SPEED.TICK_RATES = [int(i * GAME_SPEED.TICKS_PER_SECOND) for i in (0.5, 1, 2, 3, 4, 6, 8, 11, 20)]
+GAME_SPEED.TICK_RATES = [int(i * GAME_SPEED.TICKS_PER_SECOND) for i in (0.5, 1, 2, 3, 4, 6, 8, 11, 20, 100, 1000)]
 
 
 class COLORS:

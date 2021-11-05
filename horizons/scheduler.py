@@ -93,6 +93,7 @@ class Scheduler(LivingObject, metaclass=ManualConstructionSingleton):
 					continue
 				self.log.debug("S(t:%s): %s", tick_id, callback)
 				callback.callback()
+				print(callback)
 				assert callback.loops >= -1
 				if callback.loops != 0:
 					self.add_object(callback, readd=True)
