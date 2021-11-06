@@ -75,6 +75,7 @@ class ExtScheduler(object, metaclass=ManualConstructionSingleton):
 				assert dont_use is elem
 				obj = elem[1]
 				obj.callback()
+				print(f"ExtScheduler running: {obj}")
 				if obj.loops > 0 or obj.loops == -1:
 					self.add_object(obj) # re-add object
 			else:

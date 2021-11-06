@@ -97,6 +97,7 @@ class Timer(LivingObject):
 			return
 		while time.time() >= self.tick_next_time and (GAME.MAX_TICKS is None or self.tick_next_id <= GAME.MAX_TICKS):
 			for f in self.tick_func_test:
+				print(f"Timer running: {f}")
 				r = f(self.tick_next_id)
 				if r == self.TEST_SKIP:
 					# If a callback changed the speed to zero, we have to exit
@@ -109,6 +110,8 @@ class Timer(LivingObject):
 				if diff > self.ACCEPTABLE_TICK_DELAY:
 					self.tick_next_time += self.DEFER_TICK_ON_DELAY_BY
 			for f in self.tick_func_call:
+				if f.__qualname__ != "Scheduler.tick":
+					print(f"Timer running: {f}")
 				f(self.tick_next_id)
 			self.tick_next_id += 1
 			if self.ticks_per_second == 0:

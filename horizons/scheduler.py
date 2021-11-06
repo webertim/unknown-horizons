@@ -92,8 +92,8 @@ class Scheduler(LivingObject, metaclass=ManualConstructionSingleton):
 					self.log.debug("S(t:%s): %s: INVALID", tick_id, callback)
 					continue
 				self.log.debug("S(t:%s): %s", tick_id, callback)
+				print(f"Scheduler running: {callback}")
 				callback.callback()
-				print(callback)
 				assert callback.loops >= -1
 				if callback.loops != 0:
 					self.add_object(callback, readd=True)
@@ -293,7 +293,7 @@ class _CallbackObject:
 
 	def __str__(self):
 		cb = str(self.callback)
-		if "_move_tick" in cb: # very crude measure to reduce log noise
-			return "(_move_tick,{})".format(self.class_instance.worldid)
+		#if "_move_tick" in cb: # very crude measure to reduce log noise
+		#	return "(_move_tick,{})".format(self.class_instance.worldid)
 
 		return "SchedCb({} on {})".format(cb, self.class_instance)
