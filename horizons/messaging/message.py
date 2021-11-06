@@ -117,7 +117,9 @@ class Message:
 
 			>>> Foo.broadcast('sender', 1, 2)
 		"""
+		
 		cls.bus().broadcast(cls(*args))
+
 
 
 class QueuingMessage(Message):

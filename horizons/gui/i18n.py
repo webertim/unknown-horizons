@@ -61,6 +61,7 @@ def replace_attribute(widget, attribute, text):
 		log.warning("Could not replace attribute %s in widget %s", attribute, widget)
 
 
+
 def update_translations(message):
 	global translated_widgets
 	translations.set_translations()
@@ -70,7 +71,9 @@ def update_translations(message):
 		if not widget:
 			continue
 		all_widgets = translations.text_translations.get(filename, {})
+
 		for (element_name, attribute), translation in all_widgets.items():
+
 			element = widget.findChild(name=element_name)
 			if element is None:
 				# something hidden by pychan currently, we cannot find it
@@ -78,8 +81,10 @@ def update_translations(message):
 				          'assuming it is hidden', element_name, widget)
 				continue
 			replace_attribute(element, attribute, translation)
+			
 			#NOTE pychan + reloading font = ???
 			element.font = element.font
+
 		widget.adaptLayout()
 
 

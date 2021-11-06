@@ -21,6 +21,7 @@
 
 import logging
 from collections import defaultdict
+from subprocess import call
 from typing import Any, Callable, DefaultDict, List, Tuple
 
 from horizons.util.python.singleton import Singleton
@@ -73,7 +74,6 @@ class MessageBus(object, metaclass=Singleton):
 		for callback in self.global_receivers[messagetype]:
 			# Execute the callback
 			callback(message)
-
 		pair = (messagetype, message.sender)
 		for callback in self.local_receivers[pair]:
 			# Execute the callback

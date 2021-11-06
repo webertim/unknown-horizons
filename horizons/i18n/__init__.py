@@ -161,7 +161,6 @@ def change_language(language=None):
 	new_locale = language or horizons.globals.fife.get_locale()
 	fontdef = get_fontdef_for_locale(new_locale)
 	horizons.globals.fife.pychan.loadFonts(fontdef)
-
 	LanguageChanged.broadcast(None)
 
 

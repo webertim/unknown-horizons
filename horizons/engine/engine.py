@@ -32,6 +32,7 @@ from horizons.engine.settings import Settings
 from horizons.engine.sound import Sound
 from horizons.util.loaders.sqliteanimationloader import SQLiteAnimationLoader
 from horizons.util.loaders.sqliteatlasloader import SQLiteAtlasLoader
+from run_uh import setup
 
 
 class Fife:
@@ -176,9 +177,9 @@ class Fife:
 		# Because of this, the default PychanDebug value is False.
 		debug_pychan = self.get_fife_setting('PychanDebug')
 		self.pychan.init(self.engine, debug_pychan)
-
 		init_pychan()
 		self._setting.apply()
+
 
 		self._got_inited = True
 
@@ -272,31 +273,43 @@ class Fife:
 			# Use 'EN' as fallback in both cases since we cannot reasonably detect the locale.
 			return "en"
 
-	def run(self):
+	def setup(self):
 		assert self._got_inited
 
 		self.engine.initializePumping()
+
+	def run(self):
+		self.setup()
 		self.loop()
+		self.reset()
+	
+	def reset(self):
 		self.engine.finalizePumping()
 		self.__kill_engine()
 
-	def loop(self):
-		while not self.quit_requested:
-			try:
-				self.engine.pump()
-			except RuntimeError:
-				import sys
-				print("Unknown Horizons exited uncleanly via SIGINT")
-				self._log.log_warn("Unknown Horizons exited uncleanly via SIGINT")
-				sys.exit(1)
-			except fife.Exception as e:
-				print(e.getMessage())
-				break
-			for f in self.pump:
-				f()
-			if self.break_requested:
-				self.break_requested = False
-				return self.return_values
+	def loop(self, key="Timer"):
+		#import horizons.main
+		#horizons.main.session.speed_pause(False)
+
+		try:
+
+			self.engine.getTimeManager()
+			self.engine.pump()
+		except RuntimeError:
+			import sys
+			print("Unknown Horizons exited uncleanly via SIGINT")
+			self._log.log_warn("Unknown Horizons exited uncleanly via SIGINT")
+			sys.exit(1)
+		except fife.Exception as e:
+			print(e.getMessage())
+
+		for f in self.pump:
+			f()
+		if self.break_requested:
+			self.break_requested = False
+			return self.return_values
+		
+		#horizons.main.session.speed_pause(True)
 
 	def __kill_engine(self):
 		"""Called when the engine is quit"""

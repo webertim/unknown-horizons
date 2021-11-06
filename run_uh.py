@@ -44,6 +44,8 @@ import sys
 import time
 import traceback
 
+from horizons import rl
+
 # NOTE: do NOT import anything from horizons.* into global scope
 # this will break any run_uh imports from other locations (e.g. _get_version())
 
@@ -75,6 +77,28 @@ if sys.version_info[:2] < (3, 5):
 
 
 def main():
+	options = setup()
+
+	import horizons.main
+
+	# Start UH.
+	ret = horizons.main.start(options)
+
+	close(ret)
+
+def main_rl():
+
+	env = rl.make()
+	print("env created")
+	env.reset()
+	print("reset done")
+	while input() != 'exit':
+		env.step()
+	print("step done")
+
+	env.close()
+
+def setup():
 	# abort silently on signal
 	signal.signal(signal.SIGINT, functools.partial(exithandler, 130))
 	signal.signal(signal.SIGTERM, functools.partial(exithandler, 1))
@@ -118,8 +142,10 @@ def main():
 	setup_debugging(options)
 	init_environment(True)
 
-	# Start UH.
-	ret = horizons.main.start(options)
+	return options
+
+def close(ret):
+	from horizons.i18n import gettext as T
 
 	if logfile:
 		logfile.close()
@@ -128,7 +154,6 @@ def main():
 	else:
 		# Game didn't end successfully
 		sys.exit(1)
-
 
 def check_requirements():
 	"""
@@ -378,4 +403,4 @@ def log_sys_info():
 
 
 if __name__ == '__main__':
-	main()
+	main_rl()

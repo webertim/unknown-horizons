@@ -79,11 +79,7 @@ command_line_arguments = None
 
 preloader = None # type: PreloadingThread
 
-
-def start(_command_line_arguments):
-	"""Starts the horizons. Will drop you to the main menu.
-	@param _command_line_arguments: options object from optparse.OptionParser. see run_uh.py.
-	"""
+def setup(_command_line_arguments):
 	global debug, preloader, command_line_arguments, gui, session
 	command_line_arguments = _command_line_arguments
 	# NOTE: globals are designwise the same thing as singletons. they don't look pretty.
@@ -169,7 +165,6 @@ def start(_command_line_arguments):
 
 	ExtScheduler.create_instance(horizons.globals.fife.pump)
 	horizons.globals.fife.init()
-
 	horizons.globals.db = _create_main_db()
 	gui = Gui()
 	SavegameManager.init()
@@ -185,7 +180,6 @@ def start(_command_line_arguments):
 	if command_line_arguments.sp_seed:
 		SINGLEPLAYER.SEED = command_line_arguments.sp_seed
 	SINGLEPLAYER.FREEZE_PROTECTION = command_line_arguments.freeze_protection
-
 	# start something according to commandline parameters
 	startup_worked = True
 	if command_line_arguments.start_dev_map:
@@ -252,6 +246,11 @@ def start(_command_line_arguments):
 		from tests.gui import TestRunner
 		TestRunner(horizons.globals.fife, command_line_arguments.gui_test)
 
+def start(_command_line_arguments):
+	"""Starts the horizons. Will drop you to the main menu.
+	@param _command_line_arguments: options object from optparse.OptionParser. see run_uh.py.
+	"""
+	setup(_command_line_arguments)
 	horizons.globals.fife.run()
 	return True
 
