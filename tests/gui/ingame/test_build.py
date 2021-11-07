@@ -19,7 +19,7 @@
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # ###################################################
 
-import time
+import horizons.time as time
 
 from horizons.component.collectingcomponent import CollectingComponent
 from horizons.constants import BUILDINGS

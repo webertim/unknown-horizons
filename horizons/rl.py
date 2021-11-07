@@ -1,5 +1,5 @@
-import time
 import horizons
+from horizons import time
 from run_uh import close, setup
 
 
@@ -32,6 +32,7 @@ class Environment:
         import horizons.globals
         import horizons.main
         horizons.main.session.speed_unpause()
+        time.step()
         horizons.globals.fife.loop()
         horizons.main.session.speed_pause()
 

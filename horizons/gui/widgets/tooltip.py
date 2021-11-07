@@ -21,7 +21,7 @@
 
 import re
 import textwrap
-import time
+import horizons.time as time
 
 from fife import fife
 from fife.extensions.pychan.widgets import ABox, HBox, Icon, Label

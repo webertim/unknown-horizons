@@ -23,7 +23,7 @@ import json
 import logging
 import os
 import os.path
-import time
+import horizons.time as time
 import traceback
 from random import Random
 

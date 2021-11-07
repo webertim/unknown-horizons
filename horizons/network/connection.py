@@ -21,7 +21,7 @@
 
 
 import logging
-import time
+import horizons.time as time
 
 from horizons import network
 from horizons.i18n import gettext as T

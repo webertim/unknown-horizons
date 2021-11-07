@@ -26,7 +26,7 @@ import os
 import os.path
 import subprocess
 import sys
-import time
+import horizons.time as time
 
 from optparse import AmbiguousOptionError, BadOptionError, OptionParser
 

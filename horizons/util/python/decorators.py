@@ -22,7 +22,7 @@
 """Save general python function decorators here"""
 
 import functools
-import time
+import horizons.time as time
 from typing import Any, Dict, Tuple
 
 FuncArgs = Tuple[Any, ...]

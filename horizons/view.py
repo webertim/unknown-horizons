@@ -20,7 +20,7 @@
 # ###################################################
 
 import math
-import time
+import horizons.time as time
 
 from fife import fife
 from fife.fife import AudioSpaceCoordinate, Point3D

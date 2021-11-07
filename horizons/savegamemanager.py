@@ -26,7 +26,7 @@ import os.path
 import re
 import sqlite3
 import tempfile
-import time
+import horizons.time as time
 from collections import defaultdict
 
 import horizons.globals

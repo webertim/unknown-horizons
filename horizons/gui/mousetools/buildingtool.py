@@ -527,7 +527,7 @@ class BuildingTool(NavigationTool):
 			# check if 3 roads have been built within 1.2 seconds, and display
 			# a hint in case
 			if self._class.class_package == 'path':
-				import time
+				import horizons.time as time
 				now = time.time()
 				BuildingTool._last_road_built.append(now)
 				if len(BuildingTool._last_road_built) > 2:

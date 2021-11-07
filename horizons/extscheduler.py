@@ -20,7 +20,7 @@
 # ###################################################
 
 import heapq
-import time
+import horizons.time as time
 
 from horizons.util.python.singleton import ManualConstructionSingleton
 
