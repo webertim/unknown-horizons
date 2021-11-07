@@ -290,19 +290,6 @@ class Fife:
 	def loop(self, key="Timer"):
 		#import horizons.main
 		#horizons.main.session.speed_pause(False)
-
-		try:
-
-			self.engine.getTimeManager()
-			self.engine.pump()
-		except RuntimeError:
-			import sys
-			print("Unknown Horizons exited uncleanly via SIGINT")
-			self._log.log_warn("Unknown Horizons exited uncleanly via SIGINT")
-			sys.exit(1)
-		except fife.Exception as e:
-			print(e.getMessage())
-
 		for f in self.pump:
 			f()
 		if self.break_requested:

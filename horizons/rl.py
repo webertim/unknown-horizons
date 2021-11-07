@@ -1,6 +1,10 @@
 import horizons
 from horizons import time
+from horizons import constants
 from run_uh import close, setup
+from fife import fife
+import horizons.globals
+import horizons.main
 
 
 class Environment:
@@ -8,14 +12,11 @@ class Environment:
     def __init__(self) -> None:
         self.options = setup()
         self.initial = True
-        import horizons.main
+        
         horizons.main.setup(self.options)
         horizons.main.session.speed_set(176)
 
     def reset(self):
-        import horizons.main
-
-        import horizons.globals
         if not self.initial:
             horizons.globals.fife.reset()
             self.initial = False
@@ -26,18 +27,42 @@ class Environment:
         
 
     def render(self):
-        pass
+        try:
+            horizons.globals.fife.engine.pump()
+        except RuntimeError:
+            import sys
+            print("Unknown Horizons exited uncleanly via SIGINT")
+            self._log.log_warn("Unknown Horizons exited uncleanly via SIGINT")
+            sys.exit(1)
+        except fife.Exception as e:
+            print(e.getMessage())
+    
+    def build(self, point1, point2):
+        from horizons.entities import Entities
+        from horizons.world.building import BuildingClass
+        from horizons.gui.mousetools.buildingtool import BuildingTool
+        from horizons.world.units.ship import Ship
+        building : BuildingClass = Entities.buildings[constants.BUILDINGS.WAREHOUSE]
+        from horizons.world.island import Island
+        island : Island = horizons.main.session.world.islands[0]
+        #b = building(x=10, y=10, rotation=0, owner=horizons.main.session.world.player, island=island, session=horizons.main.session)
+        ship : Ship = None
+        for ship in horizons.main.session.world.ships:
+            if ship.owner == horizons.main.session.world.player:
+                playerShip = ship
+        bt = BuildingTool(session=horizons.main.session, building=building, ship=playerShip)
+        bt.preview_build(point1, point2)
+        res = bt.do_build()
+        print(res)
+        #island.add_building(b, horizons.main.session.world.player)
     
     def step(self):
-        import horizons.globals
-        import horizons.main
         horizons.main.session.speed_unpause()
         time.step()
         horizons.globals.fife.loop()
         horizons.main.session.speed_pause()
 
     def close(self):
-        import horizons.globals
         horizons.globals.fife.quit()
         close(True)
 

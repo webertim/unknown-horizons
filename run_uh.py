@@ -87,13 +87,22 @@ def main():
 	close(ret)
 
 def main_rl():
-
+	
+	from horizons.util.shapes.point import Point
 	env = rl.make()
 	print("env created")
 	env.reset()
 	print("reset done")
-	while input() != 'exit':
+	ipt = ""
+	while ipt != 'exit':
+		ipt = input()
+		if "build" in ipt:
+			x = int(ipt.split()[1])
+			y = int(ipt.split()[2])
+			p = Point(x, y)
+			env.build(p, p)
 		env.step()
+		env.render()
 	print("step done")
 
 	env.close()
