@@ -96,11 +96,17 @@ def main_rl():
 	ipt = ""
 	while ipt != 'exit':
 		ipt = input()
-		if "build" in ipt:
+		try:
 			x = int(ipt.split()[1])
 			y = int(ipt.split()[2])
+			id = int(ipt.split()[3])
 			p = Point(x, y)
-			env.build(p, p)
+		except:
+			pass
+		if "build" in ipt:
+			env.build(p, id)
+		if "move" in ipt:
+			env.move(p, id)
 		env.step()
 		env.render()
 	print("step done")

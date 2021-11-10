@@ -1,6 +1,7 @@
 import horizons
 from horizons import time
 from horizons import constants
+from horizons.util.shapes.point import Point
 from run_uh import close, setup
 from fife import fife
 import horizons.globals
@@ -14,7 +15,7 @@ class Environment:
         self.initial = True
         
         horizons.main.setup(self.options)
-        horizons.main.session.speed_set(176)
+        #horizons.main.session.speed_set(176)
 
     def reset(self):
         if not self.initial:
@@ -37,24 +38,28 @@ class Environment:
         except fife.Exception as e:
             print(e.getMessage())
     
-    def build(self, point1, point2):
+    def build(self, point1, building_id):
         from horizons.entities import Entities
         from horizons.world.building import BuildingClass
         from horizons.gui.mousetools.buildingtool import BuildingTool
         from horizons.world.units.ship import Ship
-        building : BuildingClass = Entities.buildings[constants.BUILDINGS.WAREHOUSE]
-        from horizons.world.island import Island
-        island : Island = horizons.main.session.world.islands[0]
-        #b = building(x=10, y=10, rotation=0, owner=horizons.main.session.world.player, island=island, session=horizons.main.session)
-        ship : Ship = None
+        building : BuildingClass = Entities.buildings[building_id]
         for ship in horizons.main.session.world.ships:
             if ship.owner == horizons.main.session.world.player:
                 playerShip = ship
         bt = BuildingTool(session=horizons.main.session, building=building, ship=playerShip)
-        bt.preview_build(point1, point2)
+        bt.preview_build(point1, point1)
         res = bt.do_build()
         print(res)
-        #island.add_building(b, horizons.main.session.world.player)
+
+    def move(self, point : Point, ship_id):
+        import horizons.main
+        from horizons.world.units.ship import Ship
+        ship : Ship = None
+        for ship in horizons.main.session.world.ships:
+            print(ship)
+            if ship.worldid == ship_id:
+                ship.go(point.x, point.y)
     
     def step(self):
         horizons.main.session.speed_unpause()
