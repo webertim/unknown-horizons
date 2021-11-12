@@ -47,6 +47,7 @@ class Environment:
         for ship in horizons.main.session.world.ships:
             if ship.owner == horizons.main.session.world.player:
                 playerShip = ship
+        print(building.__dict__)
         bt = BuildingTool(session=horizons.main.session, building=building, ship=playerShip)
         bt.preview_build(point1, point1)
         res = bt.do_build()
@@ -60,6 +61,12 @@ class Environment:
             print(ship)
             if ship.worldid == ship_id:
                 ship.go(point.x, point.y)
+
+    def tear(self, point : Point, _):
+        from horizons.gui.mousetools import TearingTool 
+        import horizons.main
+        tearingTool : TearingTool = TearingTool(session=horizons.main.session)
+        tearingTool.tearNoMouse(point.to_tuple())
     
     def step(self):
         horizons.main.session.speed_unpause()

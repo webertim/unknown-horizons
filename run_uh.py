@@ -107,6 +107,8 @@ def main_rl():
 			env.build(p, id)
 		if "move" in ipt:
 			env.move(p, id)
+		if "tear" in ipt:
+			env.tear(p, id)
 		env.step()
 		env.render()
 	print("step done")
